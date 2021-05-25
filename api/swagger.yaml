@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: message exchange
+  version: "0.1"
+servers:
+- url: https://virtserver.swaggerhub.com/keydphi/MsgSrvc/0.1
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:3000
+paths:
+  /messages:
+    get:
+      summary: Get Messages
+      description: This allows you to get all messages.
+      operationId: getMessages
+      responses:
+        "200":
+          description: Successful list of messages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messages'
+    post:
+      summary: Send message to server
+      description: This allows you to send a single message.
+      operationId: sendMessage
+      requestBody:
+        description: This is the message object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message:
+                id: 1
+                body: Shadow
+                timer: 5
+      responses:
+        "201":
+          description: The message has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Messages'
+  /messages/{id}:
+    get:
+      summary: Get Message
+      description: This allows you to get a single message.
+      operationId: getMessage
+      responses:
+        "200":
+          description: Successful return of message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+    put:
+      summary: Update Message
+      description: This allows you to update a single message.
+      operationId: updateMessage
+      requestBody:
+        description: This is the message object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+            example:
+              message:
+                id: 1
+                body: Shadow
+                timer: 3
+      responses:
+        "204":
+          description: The message has been updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+components:
+  schemas:
+    Messages:
+      type: array
+      items:
+        $ref: '#/components/schemas/Message'
+      x-schema-name: Messages
+    Message:
+      required:
+      - body
+      - id
+      - timer
+      type: object
+      properties:
+        id:
+          type: integer
+        body:
+          type: string
+        timer:
+          type: integer
+        encrypted:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - sent
+          - published
+          - decrypted
+      example:
+        timer: 6
+        encrypted: true
+        id: 0
+        body: body
+        status: sent
